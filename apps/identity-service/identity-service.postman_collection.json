@@ -1,0 +1,361 @@
+{
+  "info": {
+    "name": "Identity Service",
+    "_postman_id": "c9a54c01-0000-4f41-aaaa-123456789000",
+    "description": "Postman collection for Identity Service APIs (Auth, Organizations, Roles, Memberships).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login - Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+911234567890\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/auth/login-otp",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "auth", "login-otp"]
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+911234567890\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/auth/verify-otp",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "auth", "verify-otp"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"<REFRESH_TOKEN>\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/auth/refresh",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "auth", "refresh"]
+            }
+          }
+        },
+        {
+          "name": "Me (Get Current User)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/v1/auth/me",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Create Address",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"home\",\n  \"addressLine1\": \"221B Baker Street\",\n  \"addressLine2\": \"Floor 2\",\n  \"city\": \"London\",\n  \"state\": \"London\",\n  \"country\": \"UK\",\n  \"postalCode\": \"NW16XE\",\n  \"latitude\": 51.5237,\n  \"longitude\": -0.1586,\n  \"isDefault\": true,\n  \"owner\": \"USER\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/auth/addresses",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "auth", "addresses"]
+            }
+          }
+        },
+        {
+          "name": "Create Vendor Address",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"warehouse\",\n  \"addressLine1\": \"Plot 14 Industrial Area\",\n  \"city\": \"Dehradun\",\n  \"state\": \"Uttarakhand\",\n  \"country\": \"IN\",\n  \"postalCode\": \"248001\",\n  \"owner\": \"VENDOR\",\n  \"organizationId\": \"{{orgId}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/auth/addresses",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "auth", "addresses"]
+            }
+          }
+        },
+        {
+          "name": "List Addresses",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/v1/auth/addresses",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "auth", "addresses"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Organizations",
+      "item": [
+        {
+          "name": "Create Organization",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Fleet\",\n  \"type\": \"fleet\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/orgs",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "orgs"]
+            }
+          }
+        },
+        {
+          "name": "Get Organization",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/v1/orgs/{{orgId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "orgs", "{{orgId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Organization",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/orgs/{{orgId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "orgs", "{{orgId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Roles & Permissions",
+      "item": [
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ADMIN\",\n  \"description\": \"Administrator role\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/roles",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "roles"]
+            }
+          }
+        },
+        {
+          "name": "Assign Role to User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"roleId\": \"{{roleId}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/roles/assign",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "roles", "assign"]
+            }
+          }
+        },
+        {
+          "name": "Add Permission to Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": \"{{roleId}}\",\n  \"permission\": \"CAN_CREATE_BOOKING\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/roles/permission",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "roles", "permission"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Memberships",
+      "item": [
+        {
+          "name": "Add Membership",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"organizationId\": \"{{orgId}}\",\n  \"roleId\": \"{{roleId}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/memberships",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "memberships"]
+            }
+          }
+        },
+        {
+          "name": "Update Membership",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": \"{{newRoleId}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/v1/memberships/{{membershipId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "memberships", "{{membershipId}}"]
+            }
+          }
+        },
+        {
+          "name": "Remove Membership",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/v1/memberships/{{membershipId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "memberships", "{{membershipId}}"]
+            }
+          }
+        },
+        {
+          "name": "List Memberships for User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/v1/memberships/user/{{userId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["v1", "memberships", "user", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "accessToken", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "orgId", "value": "" },
+    { "key": "roleId", "value": "" },
+    { "key": "newRoleId", "value": "" },
+    { "key": "membershipId", "value": "" }
+  ]
+}

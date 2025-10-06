@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Identity Service Models
+model Organization {
+  id           String               @id @default(uuid()) @db.Uuid
+  tenantId     String
+  name         String
+  type         String               // vendor | fleet | platform
+  status       String
+  memberships  IdentityMembership[]
+  users        User[]
+  addresses    IdentityAddress[]
+  createdAt    DateTime             @default(now())
+}
+
+model User {
+  id                   String                @id @default(uuid()) @db.Uuid
+  tenantId             String
+  organizationId       String?               @db.Uuid
+  organization         Organization?         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email                String?               @unique
+  phone                String?               @unique
+  passwordHash         String?
+  name                 String?
+  userType             String
+  status               String                @default("active")
+  roles                UserRole[]
+  identityMemberships  IdentityMembership[]
+  identityAddresses    IdentityAddress[]
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+
+  @@index([organizationId])
+  @@index([tenantId])
+}
+
+model Role {
+  id                   String               @id @default(uuid()) @db.Uuid
+  name                 String               @unique
+  description          String?
+  permissions          RolePermission[]
+  users                UserRole[]
+  identityMemberships  IdentityMembership[]
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+}
+
+model UserRole {
+  id       String @id @default(uuid()) @db.Uuid
+  userId   String @db.Uuid
+  roleId   String @db.Uuid
+  user     User   @relation(fields: [userId], references: [id])
+  role     Role   @relation(fields: [roleId], references: [id])
+
+  @@unique([userId, roleId])
+}
+
+model RolePermission {
+  id         String @id @default(uuid()) @db.Uuid
+  roleId     String @db.Uuid
+  permission String
+  role       Role   @relation(fields: [roleId], references: [id])
+
+  @@index([roleId])
+  @@unique([roleId, permission])
+}
+
+model IdentityMembership {
+  id             String        @id @default(uuid()) @db.Uuid
+  userId         String        @db.Uuid
+  organizationId String        @db.Uuid
+  roleId         String?       @db.Uuid
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  role           Role?         @relation(fields: [roleId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now())
+}
+
+model IdentityAddress {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String?  @db.Uuid
+  organizationId String?  @db.Uuid
+
+  type          String
+  addressLine1  String
+  addressLine2  String?
+  city          String
+  state         String
+  country       String
+  postalCode    String
+  latitude      Float?
+  longitude     Float?
+  isDefault     Boolean  @default(false)
+
+  user          User?          @relation(fields: [userId], references: [id])
+  organization  Organization?  @relation(fields: [organizationId], references: [id])
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
