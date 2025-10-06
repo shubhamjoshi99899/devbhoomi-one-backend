@@ -1,0 +1,15 @@
+// devbhoomi-one-backend/prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Example global model (optional)
+model Tenant {
+  id   String @id @default(uuid())
+  name String
+}

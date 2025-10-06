@@ -1,0 +1,23 @@
+# ---------- Base image for all services ----------
+FROM node:20-alpine
+WORKDIR /app
+
+# Install system packages and pnpm
+RUN apk add --no-cache openssl libc6-compat python3 make g++ curl \
+ && corepack enable && corepack prepare pnpm@9.12.0 --activate
+
+# Set PNPM global bin directory (important for global installs)
+ENV PNPM_HOME="/usr/local/share/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+# Copy workspace metadata for installing dependencies
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+
+# Install all workspace dependencies
+RUN pnpm install --frozen-lockfile
+
+# Install Nest CLI globally (for build commands)
+RUN pnpm add -g @nestjs/cli
+
+# Default env
+ENV NODE_ENV=production

@@ -1,0 +1,13 @@
+{
+  "name": "@libs/nats",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "nats": "^2.29.3",
+    "pino": "^9.12.0"
+  },
+  "devDependencies": {
+    "tsconfig-paths": "^4.2.0"
+  }
+}

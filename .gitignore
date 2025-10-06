@@ -1,0 +1,28 @@
+# dependencies
+node_modules
+**/node_modules
+
+# builds
+dist
+**/dist
+build
+**/build
+
+# environment
+.env
+*.pem
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE
+.vscode
+.idea
+.DS_Store
+
+# temporary
+tmp
+*.log
